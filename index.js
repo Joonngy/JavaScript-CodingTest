@@ -114,50 +114,77 @@ function solution(bridge_length, weight, truck_weights) {
   return timePass;
 }
 
+/* 주식 가격 */
 function solution(prices) {
-//   let answer = [];
+  // 제일 빠른 정답
+  // let answer = [];
 
-//   for(let i=0; i<prices.length; i++) {
-//       let sum = 0;
-//       for(let j=i+1; j<prices.length; j++) {
-//           sum += 1;
-//           if(prices[i] > prices[j]) {
-//               break;
-//           }
+  // for(let i=0; i<prices.length; i++) {
+  //     let sum = 0;
+  //     for(let j=i+1; j<prices.length; j++) {
+  //         sum += 1;
+  //         if(prices[i] > prices[j]) {
+  //             break;
+  //         }
 
-//       }
-//       answer.push(sum);
-//   }
+  //     }
+  //     answer.push(sum);
+  // }
 
-//   return answer;
+  // return answer;
 
+  // 빙글빙글 돌아간 정답
+  // let tempArr = [];
+  // let answer = new Array(prices.length).fill(0);
+  // let totalIndex = prices.length;
+
+  // for (let i = 0; i < totalIndex; i++) {
+  //   if (i === totalIndex - 1) {
+  //     tempArr.push([i, 0, prices[i]]);
+  //     for (const a of tempArr) {
+  //       answer[a[0]] = a[1];
+  //     }
+  //     break;
+  //   }
+
+  //   for (let j = tempArr.length - 1; j >= 0; j--) {
+  //     if (tempArr[j][2] <= prices[i]) tempArr[j][1]++;
+  //     else {
+  //       const a = tempArr.pop();
+  //       answer[a[0]] = a[1];
+  //     }
+  //   }
+  //   tempArr.push([i, 1, prices[i]]);
+  // }
+
+  // return answer;
+
+  // 목적에 맞는 정답
   let tempArr = [];
-  let answer = new Array(prices.length).fill(0);
   let totalIndex = prices.length;
+  let answer = new Array(totalIndex).fill(0);
 
   for (let i = 0; i < totalIndex; i++) {
     if (i === totalIndex - 1) {
-      tempArr.push([i, 0, prices[i]]);
       for (const a of tempArr) {
-        answer[a[0]] = a[1];
+        answer[a] = i - a;
       }
       break;
     }
 
     for (let j = tempArr.length - 1; j >= 0; j--) {
-      if (tempArr[j][2] <= prices[i]) tempArr[j][1]++;
-      else {
+      if (prices[tempArr[j]] > prices[i]) {
         const a = tempArr.pop();
-        answer[a[0]] = a[1];
+        answer[a] = i - a
       }
     }
-    tempArr.push([i, 1, prices[i]]);
+    tempArr.push(i);
   }
 
   return answer;
 }
 // const input1 = [2, 1, 3, 1, 2]; //[1,3,1,1,0]
-const input1 = [1, 2, 3, 2, 3];
+const input1 = [1, 2, 3, 2, 3]; // [4,3,3,1,0)]
 const input2 = 7;
 const input3 = [1, 1, 1, 1, 1, 3, 3];
 console.log(solution(input1));
