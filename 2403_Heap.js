@@ -240,44 +240,36 @@ function solution(jobs) {
 //     return Math.floor(processed_time / count);
 // }
 
-const input1 = [
-    [0, 10],
-    [1, 0],
-    [1, 1],
-    [1, 10],
-    [1, 2],
-    [1, 2],
-    [1, 3],
-    [8, 4],
-    [9, 10],
-    [10, 32],
-    [11, 23],
-    [12, 41],
-    [13, 1],
-    [14, 1],
-    [15, 1],
-    [16, 1],
-    [17, 1],
-    [18, 1],
-]; // 471 18
-// const input1 = [[0, 3], [1, 9], [2, 6]];
+/* 이중우선순위큐 */
+function solution(operations) {
+    let answer = [];
+
+    while (operations.length > 0) {
+        const job = operations.shift().split(' ');
+
+        if (job[0] === 'I') {
+            answer.push(parseInt(job[1]));
+            answer.sort((a, b) => a - b);
+        } else {
+            if (job[1] === '-1') {
+                answer.shift();
+            } else {
+                answer.pop();
+            }
+        }
+    }
+
+    if (answer.length >= 2) {
+        return [answer.pop(), answer.shift()];
+    } else {
+        return [0, 0];
+    }
+}
+
+// const input1 = ['I 16', 'I -5643', 'D -1', 'D 1', 'D 1', 'I 123', 'D -1'];
+const input1 = ['I -45', 'I 653', 'D 1', 'I -642', 'I 45', 'I 97', 'D 1', 'D -1', 'I 333'];
 const input2 = 30;
 const input3 = [1, 1, 1, 1, 1, 3, 3];
 console.log(solution(input1));
 // console.log(solution(input1, input2));
 // console.log(solution(input1, input2, input3));
-
-/*
-1 11 30 29
-8 30 50 42 71 
-
-8 11 31 23
-1 31 50 49 72
-
-8 11 30 22
-1 30 50 49 71
-
-1 11 31 30
-8 31 50 42 72
-
-*/
