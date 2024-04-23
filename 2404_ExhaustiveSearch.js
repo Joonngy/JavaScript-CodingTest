@@ -39,9 +39,115 @@ function solution(answers) {
     return returnValue;
 }
 
-const input1 = [1, 3, 2, 4, 2];
+/* 소수 찾기 */
+// 재귀
+function solution1(numbers) {
+    const numSet = new Set();
+
+    const isPrime = num => {
+        if (num <= 1) return false;
+
+        let i = 2;
+        while (i <= num / 2) {
+            if (num % i++ === 0) return false;
+        }
+
+        return true;
+    };
+
+    const MakeNumber = (numSet, cur, arr) => {
+        if (arr.length <= 0) return;
+
+        const clone = arr.slice().reverse();
+        clone.forEach((v, i, arr) => {
+            const sliced = arr.pop();
+            const num = Number(cur + sliced);
+            if (isPrime(num)) {
+                numSet.add(num);
+            }
+
+            MakeNumber(numSet, num, arr);
+            console.log(i,num);
+            arr.unshift(sliced);
+        });
+    };
+
+    MakeNumber(numSet, '', numbers.split(''));
+
+    return numSet.size;
+}
+
+// BFS
+function solution2(numbers) {
+    const stack = [];
+
+    const isPrime = n => {
+        if (n < 2) return false;
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i === 0) return false;
+        }
+        return true;
+    };
+
+    const bfs = (num, idx) => {
+        if (num.length === numbers.length) return;
+
+        for (let i = 0; i < numbers.length; i += 1) {
+            if (idx.indexOf(i) !== -1) continue;
+
+            const newNum = num + numbers[i];
+
+            if (stack.indexOf(parseInt(newNum)) === -1 && parseInt(newNum) >= 2) {
+                if (isPrime(parseInt(newNum))) {
+                    stack.push(parseInt(newNum));
+                }
+            }
+            bfs(newNum, [...idx, i]);
+            console.log(i, newNum)
+        }
+    };
+
+    bfs('', []);
+
+    return stack.length;
+}
+
+// DFS
+function solution3(numbers) {
+    let set = new Set();
+
+    const isPrime = n => {
+        if (n < 2) return false;
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i === 0) return false;
+        }
+        return true;
+    };
+
+    const dfs = (set, fixed, arr) => {
+        if (arr.length <= 0) return;
+
+        for (let i = 0; i < arr.length; i++) {
+            let newFixed = fixed + arr[i];
+            let copyArr = [...arr];
+            copyArr.splice(i, 1);
+
+            if (isPrime(parseInt(newFixed))) {
+                set.add(parseInt(newFixed));
+            }
+
+            dfs(set, newFixed, copyArr);
+            console.log(i, newFixed);
+        }
+    };
+    dfs(set, '', numbers.split(''));
+
+    return set.size;
+}
+
+const input1 = '179';
 const input2 = [[2, 5, 3]];
 const input3 = [1, 1, 1, 1, 1, 3, 3];
-console.log(solution(input1));
+console.log(solution3(input1));
 // console.log(solution(input1, input2));
 // console.log(solution(input1, input2, input3));
