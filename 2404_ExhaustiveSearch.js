@@ -162,13 +162,61 @@ function solution(brown, yellow) {
 }
 
 /* 던젼 피로도 */
+// BFS
 function solution(k, dungeons) {
     var answer = -1;
+
+    const dfs = (curK, count, arr) => {
+        if (arr.length <= 0) return;
+
+        for (let i = 0; i < arr.length; i++) {
+            const copyArr = [...arr];
+            copyArr.splice(i, 1);
+
+            if (curK >= arr[i][0]) {
+                dfs(curK - arr[i][1], count + 1, copyArr);
+                answer = Math.max(answer, count);
+            }
+        }
+    };
+
+    dfs(k, 1, dungeons);
+
+    return answer;
+}
+// Stack
+function solution(k, dungeons) {
+    let answer = -1;
+    const stack = [];
+
+    stack.push({ curK: k, count: 1, arr: dungeons });
+
+    while (stack.length > 0) {
+        const { curK, count, arr } = stack.pop();
+
+        if (arr.length <= 0) continue;
+
+        for (let i = 0; i < arr.length; i++) {
+            const copyArr = [...arr];
+            copyArr.splice(i, 1);
+
+            if (curK >= arr[i][0]) {
+                stack.push({ curK: curK - arr[i][1], count: count + 1, arr: copyArr });
+                answer = Math.max(answer, count);
+            }
+        }
+    }
+
     return answer;
 }
 
-const input1 = 10;
-const input2 = 2;
+
+const input1 = 70;
+const input2 = [
+    [80, 20],
+    [50, 40],
+    [30, 10],
+];
 const input3 = [1, 1, 1, 1, 1, 3, 3];
 // console.log(solution(input1));
 console.log(solution(input1, input2));
