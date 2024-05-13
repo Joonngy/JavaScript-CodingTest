@@ -67,7 +67,7 @@ function solution1(numbers) {
             }
 
             MakeNumber(numSet, num, arr);
-            console.log(i,num);
+            console.log(i, num);
             arr.unshift(sliced);
         });
     };
@@ -103,7 +103,7 @@ function solution2(numbers) {
                 }
             }
             bfs(newNum, [...idx, i]);
-            console.log(i, newNum)
+            console.log(i, newNum);
         }
     };
 
@@ -145,9 +145,31 @@ function solution3(numbers) {
     return set.size;
 }
 
-const input1 = '179';
-const input2 = [[2, 5, 3]];
+/* 카펫 */
+function solution(brown, yellow) {
+    const totalNum = brown + yellow;
+
+    let index = 1;
+    while (index < totalNum / 2) {
+        if (totalNum % index === 0) {
+            const big = totalNum / index;
+            const small = index;
+
+            if ((big - 2) * (small - 2) === yellow) return [big, small];
+        }
+        index++;
+    }
+}
+
+/* 던젼 피로도 */
+function solution(k, dungeons) {
+    var answer = -1;
+    return answer;
+}
+
+const input1 = 10;
+const input2 = 2;
 const input3 = [1, 1, 1, 1, 1, 3, 3];
-console.log(solution3(input1));
-// console.log(solution(input1, input2));
+// console.log(solution(input1));
+console.log(solution(input1, input2));
 // console.log(solution(input1, input2, input3));
