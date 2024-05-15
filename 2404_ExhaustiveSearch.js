@@ -199,7 +199,8 @@ function solution(k, dungeons) {
         for (let i = 0; i < arr.length; i++) {
             const copyArr = [...arr];
             copyArr.splice(i, 1);
-
+            
+            console.log(i, count, curK, JSON.stringify(copyArr));
             if (curK >= arr[i][0]) {
                 stack.push({ curK: curK - arr[i][1], count: count + 1, arr: copyArr });
                 answer = Math.max(answer, count);
@@ -211,7 +212,7 @@ function solution(k, dungeons) {
 }
 
 
-const input1 = 70;
+const input1 = 80;
 const input2 = [
     [80, 20],
     [50, 40],
