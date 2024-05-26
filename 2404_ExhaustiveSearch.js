@@ -162,7 +162,7 @@ function solution(brown, yellow) {
 }
 
 /* 던젼 피로도 */
-// BFS
+// DFS - Recursive
 function solution(k, dungeons) {
     var answer = -1;
 
@@ -184,8 +184,8 @@ function solution(k, dungeons) {
 
     return answer;
 }
-// Stack
-function solution(k, dungeons) {
+// BFS - Stack
+function solution1(k, dungeons) {
     let answer = -1;
     const stack = [];
 
@@ -199,7 +199,7 @@ function solution(k, dungeons) {
         for (let i = 0; i < arr.length; i++) {
             const copyArr = [...arr];
             copyArr.splice(i, 1);
-            
+
             console.log(i, count, curK, JSON.stringify(copyArr));
             if (curK >= arr[i][0]) {
                 stack.push({ curK: curK - arr[i][1], count: count + 1, arr: copyArr });
@@ -211,12 +211,69 @@ function solution(k, dungeons) {
     return answer;
 }
 
+/* 전력망을 둘로 나누기 */
+// dfs
+function solution(n, wires) {
+    const ansList = [];
+    const graph = Array.from({ length: n + 1 }, () => []);
+    let visited = new Array(n + 1).fill(0);
 
-const input1 = 80;
+    const dfs = (here, graph, visited) => {
+        visited[here] = 1;
+        let node = 1;
+        for (const g of graph[here]) {
+            if (visited[g] === 0) {
+                node += dfs(g, graph, visited);
+            }
+        }
+        return node;
+    };
+
+    for (const w of wires) {
+        graph[w[0]].push(w[1]);
+        graph[w[1]].push(w[0]);
+    }
+
+    // graph.forEach((v, i) => {
+    //     console.log(`${i} : ${v}`);
+    // });
+
+    for (const w of wires) {
+        visited = new Array(n + 1).fill(0);
+
+        const index1 = graph[w[0]].indexOf(w[1]);
+        if (index1 !== -1) graph[w[0]].splice(index1, 1);
+        const index2 = graph[w[1]].indexOf(w[0]);
+        if (index2 !== -1) graph[w[1]].splice(index2, 1);
+
+        const group1 = dfs(w[0], graph, visited);
+        const group2 = dfs(w[1], graph, visited);
+        console.log(`${group1}, ${group2}`);
+        ansList.push(Math.abs(group1 - group2));
+
+        graph[w[0]].push(w[1]);
+        graph[w[1]].push(w[0]);
+    }
+
+    let min = Infinity;
+    for (const a of ansList) {
+        if (min >= a) {
+            min = a;
+        }
+    }
+    return min;
+}
+
+const input1 = 9;
 const input2 = [
-    [80, 20],
-    [50, 40],
-    [30, 10],
+    [1, 3],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [4, 6],
+    [4, 7],
+    [7, 8],
+    [7, 9],
 ];
 const input3 = [1, 1, 1, 1, 1, 3, 3];
 // console.log(solution(input1));
