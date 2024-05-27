@@ -212,7 +212,7 @@ function solution1(k, dungeons) {
 }
 
 /* 전력망을 둘로 나누기 */
-// dfs
+// dfs - recursive
 function solution(n, wires) {
     const ansList = [];
     const graph = Array.from({ length: n + 1 }, () => []);
@@ -264,6 +264,100 @@ function solution(n, wires) {
     return min;
 }
 
+// bfs - stack
+function solution1(n, wires) {
+    const ansList = [];
+    const graph = Array.from({ length: n + 1 }, () => []);
+    let visitedGroup1 = new Array(n + 1).fill(0);
+    let visitedGroup2 = new Array(n + 1).fill(0);
+
+    for (const w of wires) {
+        graph[w[0]].push(w[1]);
+        graph[w[1]].push(w[0]);
+    }
+
+    const bfs = (queue, graph, visited) => {
+        let node = 0;
+        while (queue.length > 0) {
+            let here = queue.shift();
+            visited[here] = 1;
+            node++;
+
+            for (const g of graph[here]) {
+                if (visited[g] === 0) {
+                    queue.push(g);
+                }
+            }
+        }
+        return node;
+    };
+
+    for (const w of wires) {
+        visitedGroup1 = new Array(n + 1).fill(0);
+        visitedGroup2 = new Array(n + 1).fill(0);
+
+        const index1 = graph[w[0]].indexOf(w[1]);
+        if (index1 !== -1) graph[w[0]].splice(index1, 1);
+        const index2 = graph[w[1]].indexOf(w[0]);
+        if (index2 !== -1) graph[w[1]].splice(index2, 1);
+
+        const group1 = bfs([w[0]], graph, visited);
+        const group2 = bfs([w[1]], graph, visited);
+        // console.log(`${group1}, ${group2}`);
+        ansList.push(Math.abs(group1 - group2));
+
+        graph[w[0]].push(w[1]);
+        graph[w[1]].push(w[0]);
+    }
+
+    let min = Infinity;
+    for (const a of ansList) {
+        if (min >= a) {
+            min = a;
+        }
+    }
+    return min;
+}
+
+// union-find
+function solution2(n, wires) {
+    let answer = Infinity;
+
+    // 각 노드의 부모 노드를 리턴
+    const find = (node, parent) => {
+        if (parent[node] === node) return node;
+        parent[node] = find(parent[node], parent);
+        return parent[node];
+    };
+
+    // 같은 그룹이라면 같은 부모노드를 가리킴
+    const union = (nodeA, nodeB, parent) => {
+        const a = find(nodeA, parent);
+        const b = find(nodeB, parent);
+
+        if (a < b) {
+            parent[b] = a;
+        } else {
+            parent[a] = b;
+        }
+    };
+
+    for (let i = 0; i < wires.length; i++) {
+        // 각 노드의 부모노드 초기화(최초에는 자기 자신을 가리킴)
+        const parents = Array.from({ length: n + 1 }, (x, i) => i);
+        for (const [idx, [v1, v2]] of wires.entries()) {
+            // 간선 분리
+            if (i === idx) continue;
+            // 같은 그룹인지 확인하고, 같은 그룹이라면 같은 부모노드로 업데이트
+            union(v1, v2, parents);
+        }
+        // 같은 부모노드를 가진 그래프에 속한 총 노드의 수
+        const graph = parents.slice(1).filter(x => parents[1] === find(x, parents)).length;
+        answer = Math.min(answer, Math.abs(2 * graph - n));
+    }
+    return answer;
+}
+
 const input1 = 9;
 const input2 = [
     [1, 3],
@@ -277,5 +371,5 @@ const input2 = [
 ];
 const input3 = [1, 1, 1, 1, 1, 3, 3];
 // console.log(solution(input1));
-console.log(solution(input1, input2));
+console.log(solution2(input1, input2));
 // console.log(solution(input1, input2, input3));
