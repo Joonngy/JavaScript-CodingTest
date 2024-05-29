@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/2404_ExhaustiveSearch.js"
+            "program": "${workspaceFolder}/2405_Greedy.js"
         }
     ]
 }
