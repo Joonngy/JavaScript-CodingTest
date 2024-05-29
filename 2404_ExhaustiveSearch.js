@@ -358,18 +358,34 @@ function solution2(n, wires) {
     return answer;
 }
 
-const input1 = 9;
-const input2 = [
-    [1, 3],
-    [2, 3],
-    [3, 4],
-    [4, 5],
-    [4, 6],
-    [4, 7],
-    [7, 8],
-    [7, 9],
-];
+/* 모음 사전 */
+function solution(word) {
+    let answer = 0;
+    let vowel = ['A', 'E', 'I', 'O', 'U'];
+
+    const dfs = curWord => {
+        console.log(curWord, answer);
+        if (curWord.length >= 5) return curWord;
+        if (curWord === word) return curWord;
+
+        for (let i = 0; i < 5; i++) {
+            answer++;
+            curWord += vowel[i];
+            curWord = dfs(curWord);
+            if (curWord === word) return curWord;
+            curWord = curWord.slice(0, -1);
+        }
+
+        return curWord;
+    };
+
+    dfs('');
+    return answer;
+}
+
+const input1 = 'A';
+const input2 = 1;
 const input3 = [1, 1, 1, 1, 1, 3, 3];
-// console.log(solution(input1));
-console.log(solution2(input1, input2));
+console.log(solution(input1));
+// console.log(solution2(input1, input2));
 // console.log(solution(input1, input2, input3));
