@@ -25,10 +25,39 @@ function solution(n, lost, reserve) {
     return answer;
 }
 
-const input1 = 7;
+/* 조이스틱 */
+function solution(name) {
+    let sum = 0;
+    // UP / DOWN Direction
+    for (let i = 0; i < name.length; i++) {
+        let diff = name[i].charCodeAt() - 'A'.charCodeAt();
+        sum += diff > 13 ? 26 - diff : diff;
+    }
+
+    // LEFT / RIGHT Direction
+    let minMove = name.length - 1;
+    for (let i = 1; i < name.length; i++) {
+        if (name[i] === 'A') {
+            for (var j = i + 1; j < name.length; j++) {
+                if (name[j] !== 'A') {
+                    break;
+                }
+            }
+
+            let right = i;
+            let left = name.length - j;
+
+            minMove = Math.min(minMove, left > right ? left + right * 2 : left * 2 + right);
+        }
+    }
+
+    return sum + minMove;
+}
+
+const input1 = 'BBABAAB';
 const input2 = [1, 3, 5, 7];
 const input3 = [1, 3, 5, 7];
 
-// console.log(solution(input1));
+console.log(solution(input1));
 // console.log(solution(input1, input2));
-console.log(solution(input1, input2, input3));
+// console.log(solution(input1, input2, input3));
