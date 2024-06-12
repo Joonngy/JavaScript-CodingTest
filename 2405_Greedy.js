@@ -54,10 +54,31 @@ function solution(name) {
     return sum + minMove;
 }
 
-const input1 = 'BBABAAB';
-const input2 = [1, 3, 5, 7];
+/* 큰 수 만들기 */
+function solution(num, k) {
+    let maxLength = num.length - k;
+    let stack = [];
+
+    for (let digit of num) {
+        while (k > 0 && stack.length && stack[stack.length - 1] < digit) {
+            stack.pop();
+            k--;
+        }
+        stack.push(digit);
+    }
+
+    while (k > 0) {
+        stack.pop();
+        k--;
+    }
+
+    return stack.join('');
+}
+
+const input1 = '4177252841';
+const input2 = 4;
 const input3 = [1, 3, 5, 7];
 
-console.log(solution(input1));
-// console.log(solution(input1, input2));
+// console.log(solution(input1));
+console.log(solution(input1, input2));
 // console.log(solution(input1, input2, input3));
