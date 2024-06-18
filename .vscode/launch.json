@@ -12,8 +12,10 @@
                 "<node_internals>/**"
             ],
             // "program": "${workspaceFolder}/2404_ExhaustiveSearch.js"
-            "program": "${workspaceFolder}/2405_Greedy.js"
+            // "program": "${workspaceFolder}/2405_Greedy.js"
             // "program": "${workspaceFolder}/2405_lottery.js"
+            // "program": "${workspaceFolder}/2406_DFSBFS.js"
+            "program": "${workspaceFolder}/test_socar_240618.js"
         }
     ]
 }
