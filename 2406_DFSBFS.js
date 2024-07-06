@@ -112,8 +112,7 @@ function solution(maps) {
 
             if (visited[y][x]) continue;
             maps[y][x] = 0;
-            console.log(maps);
-T
+
             visited[y][x] = true;
 
             if (y === n && x === m) return answer;
