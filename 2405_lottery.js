@@ -30,24 +30,35 @@ function getTryCount(expectedSeries) {
         };
 
         if (arraysEqual(arrayFromSet, expectedSeries)) {
-            console.log(count);
+            // console.log(count);
             // console.log(arrayFromSet);
             return count;
         }
     }
 }
-expectedSeries = [ 6, 14, 25, 33, 40, 44 ];
+expectedSeries = [10, 15, 24, 30, 31, 37];
 
-let total = 0;
-let repeat = 10;
-for (let i = 0; i < repeat; i++) {
-    total += getTryCount(expectedSeries);
+for (let i = 0; i < 5; i++) {
+    let total = 0;
+    let repeat = 7;
+    for (let i = 0; i < repeat; i++) {
+        total += getTryCount(expectedSeries);
+    }
+    console.log(total, getSampleNumber(total / 10));
 }
-console.log(total);
-console.log(getSampleNumber(total / 10));
-
 
 /* 선택 번호
+24/7/6 -> [ 10, 15, 24, 30, 31, 37 ]
+[ 11, 12, 20, 27, 36, 41 ]
+[ 5, 14, 17, 29, 30, 39 ]
+[ 3, 18, 33, 34, 39, 44 ]
+[ 2, 16, 24, 25, 29, 43 ]
+[ 9, 17, 20, 25, 40, 44] 자동
+
+[ 14, 15, 25, 32, 34, 40 ]
+[ 1, 8, 12, 38, 42, 43 ]
+[ 5, 6, 23, 24, 43, 44 ]
+
 24/6/29 -> [ 4, 5, 9, 11, 37, 40 ]
 [ 2, 12, 17, 22, 36, 41 ]
 [ 11, 22, 25, 27, 30, 41 ]
@@ -69,8 +80,7 @@ console.log(getSampleNumber(total / 10));
 [ 3, 7, 21, 23, 24, 32 ]
 [ 5, 14, 16, 19, 30, 35 ]
 
-[ 7, 20, 29, 35, 39, 41 ]
-[ 14, 15, 25, 32, 34, 40 ]
+
 
 24/6/8 [ 13, 19, 21, 24, 34, 35 ]
 24/6/1 [ 3, 6, 21, 30, 34, 35 ]
