@@ -127,21 +127,53 @@ function solution(maps) {
     return -1;
 }
 
-const input1 = [
-    [1, 0, 1, 1, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 1],
-    [1, 1, 1, 0, 1],
-    [0, 0, 0, 0, 1],
-];
-const input2 = [
-    [1, 0, 1, 0],
-    [0, 1, 1, 0],
-    [1, 1, 1, 1],
-    [0, 0, 1, 1],
-];
-const input3 = [1, 3, 5, 7];
+/* 단어 변환 */
+function solution(begin, target, words) {
+    let answer = 100;
 
-console.log(solution(input1));
+    if (!words.includes(target)) return 0;
+
+    const countDiff = (ori, dest) => {
+        let count = 0;
+        const word1 = ori.split('');
+        const word2 = dest.split('');
+
+        for (let i = 0; i < word1.length; i++) {
+            count = word1[i] !== word2[i] ? count + 1 : count;
+        }
+
+        return count;
+    };
+
+    const dfs = (wordSet, curWord, curLevel) => {
+        if (wordSet.length === 0) return;
+
+        for (let i = 0; i < wordSet.length; i++) {
+            if (countDiff(curWord, wordSet[i]) > 1) {
+                continue;
+            }
+            const newSet = [...wordSet];
+            newSet.splice(i, 1); 
+            const newLevel = curLevel + 1;
+            console.log(i, wordSet[i], newSet, newLevel);
+
+            dfs(newSet, wordSet[i], newLevel);
+            if (answer > newLevel && wordSet[i] === target) answer = newLevel;
+        }
+    };
+
+    dfs(words, begin, 0);
+
+    return answer === 100 ? 0 : answer;
+}
+
+// const input1 = 'hit';
+// const input2 = 'cog';
+// const input3 = ['hot', 'dot', 'dog', 'lot', 'log', 'cog'];
+const input1 = 'aaaaaaaa';
+const input2 = 'ababbbbb';
+const input3 = ['aaaaaaab', 'aaaaaabb', 'aaaaabbb', 'abaaabbb', 'abababbb', 'ababbbbb'];
+
+// console.log(solution(input1));
 // console.log(solution(input1, input2));
-// console.log(solution(input1, input2, input3));
+console.log(solution(input1, input2, input3));
