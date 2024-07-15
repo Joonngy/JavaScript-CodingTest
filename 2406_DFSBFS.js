@@ -211,18 +211,48 @@ function solution(rectangle, characterX, characterY, itemX, itemY) {
     return 0;
 }
 
+/* 여행 경로 */
+function solution(tickets) {
+    const totalSize = tickets.length + 1;
+    let answer = [];
+    const dfs = (currentTickets, currentAirport, list) => {
+        if (currentTickets.length === 0) return;
+
+        for (let i = 0; i < currentTickets.length; i++) {
+            const newTickets = [...currentTickets];
+            const [[depart, arrival]] = newTickets.splice(i, 1);
+            const newList = [...list];
+
+            if (depart !== currentAirport) continue;
+            else newList.push(arrival);
+            console.log(currentAirport, `${depart}-${arrival}`, JSON.stringify(currentTickets));
+            dfs(newTickets, arrival, newList);
+
+            if (newList.length === totalSize) {
+                if (answer.length === 0) answer = [...newList];
+                else if (newList.join(',') < answer.join(',')) answer = [...newList];
+            }
+        }1
+    };
+
+    dfs(tickets, "ICN", ["ICN"]);
+
+    return answer;
+}
+
 const input1 = [
-    [1, 1, 8, 4],
-    [2, 2, 4, 9],
-    [3, 6, 9, 8],
-    [6, 3, 7, 7],
+    ['ICN', 'SFO'],
+    ['ICN', 'ATL'],
+    ['SFO', 'ATL'],
+    ['ATL', 'ICN'],
+    ['ATL', 'SFO'],
 ];
 const input2 = 9;
 const input3 = 7;
 const input4 = 6;
 const input5 = 1;
 
-// console.log(solution(input1));
+console.log(solution(input1));
 // console.log(solution(input1, input2));
 // console.log(solution(input1, input2, input3));
 // console.log(solution(input1, input2, input3, input4, input5));
