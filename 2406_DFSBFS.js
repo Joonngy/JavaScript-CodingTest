@@ -153,7 +153,7 @@ function solution(begin, target, words) {
                 continue;
             }
             const newSet = [...wordSet];
-            newSet.splice(i, 1); 
+            newSet.splice(i, 1);
             const newLevel = curLevel + 1;
             console.log(i, wordSet[i], newSet, newLevel);
 
@@ -167,13 +167,62 @@ function solution(begin, target, words) {
     return answer === 100 ? 0 : answer;
 }
 
-// const input1 = 'hit';
-// const input2 = 'cog';
-// const input3 = ['hot', 'dot', 'dog', 'lot', 'log', 'cog'];
-const input1 = 'aaaaaaaa';
-const input2 = 'ababbbbb';
-const input3 = ['aaaaaaab', 'aaaaaabb', 'aaaaabbb', 'abaaabbb', 'abababbb', 'ababbbbb'];
+/* 아이템 줍기 */
+function solution(rectangle, characterX, characterY, itemX, itemY) {
+    characterX *= 2;
+    characterY *= 2;
+    itemX *= 2;
+    itemY *= 2;
+
+    const doubRectangle = rectangle.map(points => points.map(point => point * 2));
+    const outline = Array.from({ length: 103 }, () => Array(103).fill(0));
+
+    doubRectangle.forEach(([x1, y1, x2, y2]) => {
+        for (let x = x1; x <= x2; x++) {
+            for (let y = y1; y <= y2; y++) {
+                if (x === x1 || x === x2 || y === y1 || y === y2) {
+                    if (outline[x][y] === 0) outline[x][y] = 1;
+                } else {
+                    outline[x][y] = 2;
+                }
+            }
+        }
+    });
+
+    const queue = [[characterX, characterY, 0]];
+    outline[characterX][characterY] = 0;
+    const dx = [0, 0, -1, 1];
+    const dy = [-1, 1, 0, 0];
+    while (queue.length > 0) {
+        const [post_x, post_y, cnt] = queue.shift();
+
+        if (post_x === itemX && post_y === itemY) return cnt / 2;
+
+        for (let d = 0; d < 4; d++) {
+            const nx = post_x + dx[d];
+            const ny = post_y + dy[d];
+            if (outline[nx][ny] === 1) {
+                queue.push([nx, ny, cnt + 1]);
+                outline[nx][ny] = 0;
+            }
+        }
+    }
+
+    return 0;
+}
+
+const input1 = [
+    [1, 1, 8, 4],
+    [2, 2, 4, 9],
+    [3, 6, 9, 8],
+    [6, 3, 7, 7],
+];
+const input2 = 9;
+const input3 = 7;
+const input4 = 6;
+const input5 = 1;
 
 // console.log(solution(input1));
 // console.log(solution(input1, input2));
-console.log(solution(input1, input2, input3));
+// console.log(solution(input1, input2, input3));
+// console.log(solution(input1, input2, input3, input4, input5));
